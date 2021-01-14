@@ -21,6 +21,7 @@ class UserTest extends TestCase
         );
 
         $response->assertStatus(Response::HTTP_CREATED);
+
         $response->assertJson([
                 "credit"   => $data['credit'],
                 "document" => $data['document'],
@@ -29,5 +30,9 @@ class UserTest extends TestCase
                 "type"     => $data['type'],
                 "id"       => $response->json('id'),
         ]);
+
+        unset($data['password']);
+
+        $this->assertDatabaseHas('users', $data);
     }
 }

@@ -23,7 +23,6 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'id' => Uuid::uuid4()->toString(),
             'credit' => $this->faker->numberBetween(100000, 1000000),
             'document' => $this->faker->unique('', 100)->randomNumber(8),
             'email' => $this->faker->email,

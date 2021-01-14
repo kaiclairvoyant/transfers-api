@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         ]);
 
         User::factory()->create([
-            'name' => 'Bolos Arruda',
+            'name' => 'Arruda Confeitaria',
             'credit' => '200000',
             'type' => User::TYPE_SHOPKEEPER,
         ]);

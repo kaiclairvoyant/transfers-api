@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
 class PayerRule implements Rule
@@ -15,7 +16,7 @@ class PayerRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value;
+        return optional(User::find($value))->type === User::TYPE_COMMON;
     }
 
     /**
@@ -25,6 +26,6 @@ class PayerRule implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be uppercase.';
+        return 'Invalid user type.';
     }
 }

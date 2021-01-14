@@ -26,7 +26,7 @@ class TransferTest extends TestCase
         $response = $this->postJson(
             'api/transfers',
             [
-                'value' => $value,
+                'value'    => $value,
                 'payer_id' => $payer->id,
                 'payee_id' => $payee->id
             ]
@@ -34,12 +34,14 @@ class TransferTest extends TestCase
 
         $response->assertStatus(Response::HTTP_CREATED);
 
-        $response->assertJson([
-            "value" => $value,
+        $transfer = [
+            "value"    => $value,
             "payer_id" => $payer->id,
             "payee_id" => $payee->id,
-            "id" => $response->json('id'),
-        ]);
+            "id"       => $response->json('id'),
+        ];
+
+        $response->assertJson($transfer);
 
         $this->assertEquals(
             $payer->credit - $value,
@@ -50,5 +52,7 @@ class TransferTest extends TestCase
             $payee->credit + $value,
             $payee->refresh()->credit
         );
+
+        $this->assertDatabaseHas('transfers', $transfer);
     }
 }
