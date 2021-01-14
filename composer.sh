@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker exec -it transfers-app composer $@
+docker exec --user 1000:1000 -it transfers-app composer $@

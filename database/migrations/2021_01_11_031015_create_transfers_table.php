@@ -15,15 +15,16 @@ class CreateTransfersTable extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->uuid('id');
-            $table->foreignUuid('sender_id');
-            $table->foreignUuid('receiver_id');
+            $table->foreignUuid('payer_id');
+            $table->foreignUuid('payee_id');
             $table->bigInteger('value');
+            $table->timestamps();
 
-            $table->foreign('sender_id')
+            $table->foreign('payer_id')
                 ->references('id')
                 ->on('users');
 
-            $table->foreign('receiver_id')
+            $table->foreign('payee_id')
                 ->references('id')
                 ->on('users');
         });
@@ -37,11 +38,11 @@ class CreateTransfersTable extends Migration
     public function down()
     {
         Schema::table('transfers', function (Blueprint $table) {
-            $table->dropForeign('transfers_sender_id_foreign');
+            $table->dropForeign('transfers_payer_id_foreign');
         });
 
         Schema::table('transfers', function (Blueprint $table) {
-            $table->dropForeign('transfers_receiver_id_foreign');
+            $table->dropForeign('transfers_payee_id_foreign');
         });
 
         Schema::dropIfExists('transfers');

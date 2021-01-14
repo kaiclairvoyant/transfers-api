@@ -15,16 +15,13 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
+            $table->bigInteger('credit')->default(0);
+            $table->unsignedInteger('document')->unique();
             $table->string('email')->unique();
-            $table->string('document')->unique();
+            $table->string('name');
             $table->string('password');
-            $table->bigInteger('credit');
-            $table->unsignedSmallInteger('user_type_id');
-
-            $table->foreign('user_type_id')
-                ->references('id')
-                ->on('user_types');
+            $table->unsignedTinyInteger('type');
+            $table->timestamps();
         });
     }
 
@@ -35,10 +32,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('users_user_type_id_foreign');
-        });
-
         Schema::dropIfExists('users');
     }
 }

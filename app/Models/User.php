@@ -3,12 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Ramsey\Uuid\Uuid;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+
+    public const TYPE_COMMON = 1;
+    public const TYPE_SHOPKEEPER = 2;
+
+    protected $keyType = 'string';
+
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -16,9 +24,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'credit',
+        'document',
         'email',
+        'name',
         'password',
+        'type',
     ];
 
     /**
@@ -28,15 +39,21 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function transfers(): HasMany
+    {
+        return $this->hasMany(Transfer::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (!isset($model->id)) {
+                $model->id = Uuid::uuid4()->toString();
+            }
+        });
+    }
 }
