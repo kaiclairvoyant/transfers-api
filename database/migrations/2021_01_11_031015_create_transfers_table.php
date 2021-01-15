@@ -15,8 +15,8 @@ class CreateTransfersTable extends Migration
     {
         Schema::create('transfers', function (Blueprint $table) {
             $table->uuid('id');
-            $table->foreignUuid('payer_id');
-            $table->foreignUuid('payee_id');
+            $table->unsignedBigInteger('payer_id');
+            $table->unsignedBigInteger('payee_id');
             $table->bigInteger('value');
             $table->timestamps();
 

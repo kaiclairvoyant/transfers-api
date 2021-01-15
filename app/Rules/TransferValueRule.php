@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
 class TransferValueRule implements Rule
@@ -15,7 +16,13 @@ class TransferValueRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value;
+        $user = User::find(request()->payer_id);
+
+        if (! ($user instanceof User)) {
+            return false;
+        }
+
+        return $user->credit >= $value;
     }
 
     /**
@@ -25,6 +32,6 @@ class TransferValueRule implements Rule
      */
     public function message()
     {
-        return 'The :attribute must be uppercase.';
+        return 'Insufficient credit.';
     }
 }

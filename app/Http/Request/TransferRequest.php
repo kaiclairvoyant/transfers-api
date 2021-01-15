@@ -33,10 +33,10 @@ class TransferRequest extends FormRequest
             ],
             'payer_id' => [
                 'required',
-                'uuid',
+                'integer',
                 new PayerRule()
             ],
-            'payee_id' => 'required|uuid|exists:users,id',
+            'payee_id' => 'required|integer|exists:users,id',
         ];
     }
 }

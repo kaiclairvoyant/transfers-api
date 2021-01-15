@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Ramsey\Uuid\Uuid;
 
 class User extends Model
 {
@@ -15,8 +14,6 @@ class User extends Model
     public const TYPE_SHOPKEEPER = 2;
 
     protected $keyType = 'string';
-
-    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -46,16 +43,5 @@ class User extends Model
     public function transfers(): HasMany
     {
         return $this->hasMany(Transfer::class);
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (!isset($model->id)) {
-                $model->id = Uuid::uuid4()->toString();
-            }
-        });
     }
 }
