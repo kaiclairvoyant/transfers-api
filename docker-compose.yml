@@ -4,7 +4,7 @@ services:
     laravel:
         container_name: transfers-app
         build:
-            context: ./vendor/laravel/sail/runtimes/8.0
+            context: ./docker/8.0
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -40,6 +40,4 @@ networks:
         driver: bridge
 volumes:
     sailmysql:
-        driver: local
-    sailredis:
         driver: local
