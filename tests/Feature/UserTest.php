@@ -35,4 +35,35 @@ class UserTest extends TestCase
 
         $this->assertDatabaseHas('users', $data);
     }
+
+    public function testItCanUpdateUsers()
+    {
+        $user = User::factory()->create();
+
+        $data = User::factory()->make()->makeVisible('password')->toArray();
+
+        $response = $this->putJson(
+            route('users.update', $user->id),
+            $data
+        );
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+
+        unset($data['password']);
+
+        $this->assertDatabaseHas('users', $data);
+    }
+
+    public function testItCanDeleteUsers()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->deleteJson(
+            route('users.destroy', $user->id)
+        );
+
+        $response->assertStatus(Response::HTTP_NO_CONTENT);
+
+        $this->assertDatabaseMissing('users', $user->toArray());
+    }
 }

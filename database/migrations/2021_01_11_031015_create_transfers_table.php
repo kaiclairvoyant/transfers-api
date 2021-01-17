@@ -19,6 +19,7 @@ class CreateTransfersTable extends Migration
             $table->unsignedBigInteger('payee_id');
             $table->bigInteger('value');
             $table->timestamps();
+            $table->dropColumn('updated_at');
 
             $table->foreign('payer_id')
                 ->references('id')
