@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class TransferService
 {
+    private NotificationService $notificationService;
+
+    private AuthorizationService $authorizationService;
+
+    public function __construct()
+    {
+        $this->notificationService = app(NotificationService::class);
+
+        $this->authorizationService = app(AuthorizationService::class);
+    }
+
     public function index(): array
     {
         return Transfer::all()->toArray();
@@ -15,20 +26,22 @@ class TransferService
 
     public function store(array $data): Transfer
     {
-        DB::beginTransaction();
+        $auth = $this->authorizationService->isAuthorized();
 
-        $auth = $this->checkAuthorizationApi($data);
+        if ($auth) {
+            DB::beginTransaction();
 
-        if (in_array('Autorizado', $auth)) {
             $this->subtractPayerCredit($data['payer_id'], $data['value']);
 
             $this->addPayeeCredit($data['payee_id'], $data['value']);
 
+            $this->notificationService->sendNotification();
+
+            $transfer = Transfer::create($data);
+
             DB::commit();
 
-            $this->notifyReceiver();
-
-            return Transfer::create($data);
+            return $transfer;
         }
 
         DB::rollBack();
@@ -36,21 +49,12 @@ class TransferService
         throw new \Exception('Transferência não autorizada.');
     }
 
-    private function checkAuthorizationApi(array $data): array
-    {
-        return [
-            'message' => 'Autorizado'
-        ];
-    }
-
     private function subtractPayerCredit(string $payer_id, int $value): void
     {
         $payer = User::findOrFail($payer_id);
 
-        $newCredit = $payer->credit - $value;
-
         $payer->update([
-            'credit' => $newCredit
+            'credit' => $payer->credit - $value
         ]);
     }
 
@@ -58,26 +62,8 @@ class TransferService
     {
         $payee = User::findOrFail($payee_id);
 
-        $newCredit = $payee->credit + $value;
-
         $payee->update([
-            'credit' => $newCredit
+            'credit' => $payee->credit + $value
         ]);
-    }
-
-    private function notifyReceiver(): void
-    {
-        $message = $this->callNotificationService();
-
-        if (!in_array('Enviado', $message)) {
-            report(
-                new \Exception('Notificação não enviada')
-            );
-        }
-    }
-
-    private function callNotificationService(): array
-    {
-        return ['message' => 'Enviado'];
     }
 }
