@@ -15,11 +15,6 @@ class User extends Model
 
     protected $keyType = 'string';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'credit',
         'document',
@@ -29,12 +24,13 @@ class User extends Model
         'type',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
+        'password',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $casts = [
         'password',
         'created_at',
         'updated_at',

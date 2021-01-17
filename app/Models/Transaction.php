@@ -17,11 +17,6 @@ class Transaction extends Model
 
     public $incrementing = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'payer_id',
         'payee_id',

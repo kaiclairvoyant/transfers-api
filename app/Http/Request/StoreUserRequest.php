@@ -25,7 +25,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'credit'   => 'integer|nullable',
-            'document' => 'required',
+            'document' => 'required|unique:users,document',
             'email'    => 'required|email|unique:users,email',
             'name'     => 'required|string',
             'password' => 'required|string',

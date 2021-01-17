@@ -9,7 +9,7 @@ class UserService
 {
     public function index(): array
     {
-        return User::with('paidTransfers', 'receivedTransfers')->get()->toArray();
+        return User::with('paidTransactions', 'receivedTransactions')->get()->toArray();
     }
 
     public function store(array $data): User
