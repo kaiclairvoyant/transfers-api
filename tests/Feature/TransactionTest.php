@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
-class TransferTest extends TestCase
+class TransactionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,7 +24,7 @@ class TransferTest extends TestCase
         $value = 30000;
 
         $response = $this->postJson(
-            'api/transfers',
+            'api/transaction',
             [
                 'value'    => $value,
                 'payer_id' => $payer->id,
@@ -34,14 +34,14 @@ class TransferTest extends TestCase
 
         $response->assertStatus(Response::HTTP_CREATED);
 
-        $transfer = [
+        $transaction = [
             "value"    => $value,
             "payer_id" => $payer->id,
             "payee_id" => $payee->id,
             "id"       => $response->json('id'),
         ];
 
-        $response->assertJson($transfer);
+        $response->assertJson($transaction);
 
         $this->assertEquals(
             $payer->credit - $value,
@@ -53,6 +53,6 @@ class TransferTest extends TestCase
             $payee->refresh()->credit
         );
 
-        $this->assertDatabaseHas('transfers', $transfer);
+        $this->assertDatabaseHas('transactions', $transaction);
     }
 }

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Request\TransferRequest;
-use App\Services\TransferService;
+use App\Http\Request\TransactionRequest;
+use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-class TransferController extends Controller
+class TransactionController extends Controller
 {
-    private TransferService $service;
+    private TransactionService $service;
 
     public function __construct()
     {
-        $this->service = app(TransferService::class);
+        $this->service = app(TransactionService::class);
     }
 
     public function index(): JsonResponse
@@ -24,7 +24,7 @@ class TransferController extends Controller
         );
     }
 
-    public function store(TransferRequest $request): JsonResponse
+    public function store(TransactionRequest $request): JsonResponse
     {
         return response()->json(
             $this->service->store($request->validated()),

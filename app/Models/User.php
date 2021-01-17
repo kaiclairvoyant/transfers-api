@@ -40,13 +40,13 @@ class User extends Model
         'updated_at',
     ];
 
-    public function paidTransfers(): HasMany
+    public function paidTransactions(): HasMany
     {
-        return $this->hasMany(Transfer::class, 'payer_id', 'id');
+        return $this->hasMany(Transaction::class, 'payer_id', 'id');
     }
 
-    public function receivedTransfers(): HasMany
+    public function receivedTransactions(): HasMany
     {
-        return $this->hasMany(Transfer::class, 'payee_id', 'id');
+        return $this->hasMany(Transaction::class, 'payee_id', 'id');
     }
 }

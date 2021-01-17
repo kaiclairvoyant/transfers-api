@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransfersTable extends Migration
+class CreateTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTransfersTable extends Migration
      */
     public function up()
     {
-        Schema::create('transfers', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id');
             $table->unsignedBigInteger('payer_id');
             $table->unsignedBigInteger('payee_id');
@@ -38,14 +38,14 @@ class CreateTransfersTable extends Migration
      */
     public function down()
     {
-        Schema::table('transfers', function (Blueprint $table) {
-            $table->dropForeign('transfers_payer_id_foreign');
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->dropForeign('transactions_payer_id_foreign');
         });
 
-        Schema::table('transfers', function (Blueprint $table) {
-            $table->dropForeign('transfers_payee_id_foreign');
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->dropForeign('transactions_payee_id_foreign');
         });
 
-        Schema::dropIfExists('transfers');
+        Schema::dropIfExists('transactions');
     }
 }

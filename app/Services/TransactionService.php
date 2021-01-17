@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Transfer;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class TransferService
+class TransactionService
 {
     private NotificationService $notificationService;
 
@@ -21,10 +21,10 @@ class TransferService
 
     public function index(): array
     {
-        return Transfer::all()->toArray();
+        return Transaction::all()->toArray();
     }
 
-    public function store(array $data): Transfer
+    public function store(array $data): Transaction
     {
         $auth = $this->authorizationService->isAuthorized();
 
@@ -37,11 +37,11 @@ class TransferService
 
             $this->notificationService->sendNotification();
 
-            $transfer = Transfer::create($data);
+            $transaction = Transaction::create($data);
 
             DB::commit();
 
-            return $transfer;
+            return $transaction;
         }
 
         DB::rollBack();

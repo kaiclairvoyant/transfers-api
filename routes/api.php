@@ -16,5 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('users', \App\Http\Controllers\UserController::class)
     ->only('index', 'store', 'update', 'destroy');
 
-Route::apiResource('transfers', \App\Http\Controllers\TransferController::class)
+Route::apiResource('transaction', \App\Http\Controllers\TransactionController::class)
     ->only('index', 'store');

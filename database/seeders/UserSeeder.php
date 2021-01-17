@@ -31,6 +31,20 @@ class UserSeeder extends Seeder
             'type' => User::TYPE_SHOPKEEPER,
         ]);
 
-        User::factory(8)->create();
+        User::factory()->create([
+            'name' => 'Dona Rosa',
+            'email' => 'dona.rosa@gmail.com',
+            'credit' => '200000',
+            'type' => User::TYPE_SHOPKEEPER,
+        ]);
+
+        User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john.doe@gmail.com',
+            'credit' => '200000',
+            'type' => User::TYPE_COMMON,
+        ]);
+
+        User::factory(11)->create();
     }
 }

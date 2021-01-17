@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Http\Request\TransferRequest;
+use App\Http\Request\TransactionRequest;
 use App\Models\User;
 use App\Rules\PayerRule;
 use App\Rules\TransferValueRule;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
-class TransferRequestTest extends TestCase
+class TransactionRequestTest extends TestCase
 {
     use WithFaker;
     use RefreshDatabase;
@@ -25,7 +25,7 @@ class TransferRequestTest extends TestCase
         $payee = User::factory()->create();
 
         $response = $this->postJson(
-            'api/transfers',
+            'api/transaction',
             [
                 'value' => $this->faker->randomNumber(6),
                 'payer_id' => $payer->id,
@@ -48,7 +48,7 @@ class TransferRequestTest extends TestCase
         $payee = User::factory()->create();
 
         $response = $this->postJson(
-            'api/transfers',
+            'api/transaction',
             [
                 'value' => 20000,
                 'payer_id' => $payer->id,
@@ -77,7 +77,7 @@ class TransferRequestTest extends TestCase
                 ],
                 'payee_id' => 'required|integer|exists:users,id',
             ],
-            (new TransferRequest())->rules()
+            (new TransactionRequest())->rules()
         );
     }
 }

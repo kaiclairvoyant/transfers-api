@@ -6,7 +6,7 @@ use App\Rules\PayerRule;
 use App\Rules\TransferValueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TransferRequest extends FormRequest
+class TransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
