@@ -24,7 +24,7 @@ class Transaction extends Model
         'value',
     ];
 
-    public function getCreatedAtAttribute($date)
+    public function getCreatedAtAttribute(string $date): string
     {
         return (new Carbon($date))->format('d-m-Y H:i:s');
     }
