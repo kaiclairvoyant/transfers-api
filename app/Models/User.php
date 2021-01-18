@@ -31,9 +31,7 @@ class User extends Model
     ];
 
     protected $casts = [
-        'password',
-        'created_at',
-        'updated_at',
+        'type' => 'integer',
     ];
 
     public function paidTransactions(): HasMany
