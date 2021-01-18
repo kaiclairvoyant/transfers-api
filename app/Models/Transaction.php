@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Ramsey\Uuid\Uuid;
 
 class Transaction extends Model
@@ -22,6 +23,11 @@ class Transaction extends Model
         'payee_id',
         'value',
     ];
+
+    public function getCreatedAtAttribute($date)
+    {
+        return (new Carbon($date))->format('d-m-Y H:i:s');
+    }
 
     public function payer(): BelongsTo
     {
