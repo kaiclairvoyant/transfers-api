@@ -26,9 +26,18 @@ class TransactionController extends Controller
 
     public function store(TransactionRequest $request): JsonResponse
     {
-        return response()->json(
-            $this->service->store($request->validated()),
-            Response::HTTP_CREATED
-        );
+        try {
+            return response()->json(
+                $this->service->store($request->validated()),
+                Response::HTTP_CREATED
+            );
+        } catch (\Exception $exception) {
+            return response()->json(
+                [
+                    'message' => $exception->getMessage()
+                ],
+                $exception->getCode()
+            );
+        }
     }
 }

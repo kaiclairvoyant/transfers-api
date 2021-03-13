@@ -28,7 +28,11 @@ class TransactionService
     {
         $auth = $this->authorizationService->isAuthorized();
 
-        if ($auth) {
+        if (!$auth) {
+            throw new \Exception('Unauthorized', 401);
+        }
+
+        try {
             DB::beginTransaction();
 
             $this->subtractPayerCredit($data['payer_id'], $data['value']);
@@ -42,11 +46,11 @@ class TransactionService
             DB::commit();
 
             return $transaction;
+        } catch (\Exception $exception) {
+            DB::rollBack();
+
+            throw new \Exception('Transaction could not be completed', 500);
         }
-
-        DB::rollBack();
-
-        throw new \Exception('Transferência não autorizada.');
     }
 
     private function subtractPayerCredit(string $payer_id, int $value): void
