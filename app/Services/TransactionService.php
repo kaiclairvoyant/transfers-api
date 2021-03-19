@@ -2,21 +2,25 @@
 
 namespace App\Services;
 
+use App\Interfaces\AuthorizationInterface;
+use App\Interfaces\NotificationInterface;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
-    private NotificationService $notificationService;
+    private NotificationInterface $notificationInterface;
 
-    private AuthorizationService $authorizationService;
+    private AuthorizationInterface $authorizationInterface;
 
-    public function __construct()
-    {
-        $this->notificationService = app(NotificationService::class);
+    public function __construct(
+        NotificationInterface $notificationInterface,
+        AuthorizationInterface $authorizationInterface
+    ) {
+        $this->notificationInterface = $notificationInterface;
 
-        $this->authorizationService = app(AuthorizationService::class);
+        $this->authorizationInterface = $authorizationInterface;
     }
 
     public function index(): array
@@ -26,7 +30,7 @@ class TransactionService
 
     public function store(array $data): Transaction
     {
-        $auth = $this->authorizationService->isAuthorized();
+        $auth = $this->authorizationInterface->isAuthorized();
 
         if (!$auth) {
             throw new \Exception('Unauthorized', 401);
@@ -39,7 +43,7 @@ class TransactionService
 
             $this->addPayeeCredit($data['payee_id'], $data['value']);
 
-            $this->notificationService->sendNotification();
+            $this->notificationInterface->sendNotification();
 
             $transaction = Transaction::create($data);
 

@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
-class NotificationService
+use App\Interfaces\NotificationInterface;
+
+class NotificationService implements NotificationInterface
 {
     public function sendNotification(): void
     {
@@ -15,7 +17,7 @@ class NotificationService
         }
     }
 
-    private function notify(): array
+    public function notify(): array
     {
         return ['message' => 'Enviado'];
     }

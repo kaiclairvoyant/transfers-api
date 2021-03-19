@@ -2,20 +2,20 @@
 
 namespace App\Services;
 
-class AuthorizationService
+use App\Interfaces\AuthorizationInterface;
+
+class AuthorizationService implements AuthorizationInterface
 {
     public function isAuthorized(): bool
     {
-        $auth = $this->checkAuthApi();
-
-        if (in_array('Autorizado', $auth)) {
+        if (in_array('Autorizado', $this->checkAuthApi())) {
             return true;
         }
 
         return false;
     }
 
-    private function checkAuthApi(): array
+    public function checkAuthApi(): array
     {
         return [
             'message' => 'Autorizado'
